@@ -1,2 +1,20 @@
 # NaiveBayes20NewsGroup
-Naive Bayes Classifier for 20 Newsgroups
+
+The goal of the project is to not only implement the classifier in Python 3 but to provide several statistics on the compositions of the attributes, namely word positions, for given classes and to deduce reasons why these results came to be. We also want to check the accuracy of the classifier by training it first then using the test dataset.
+
+# Method
+The dataset is found here http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz
+The Python code first attempts to build the vocabulary of the dataset as a set. This is done by iterating through every textfile and using regex to grab every alphabetic word. I attempted to use other regex such as grabbing punctuation marks and so forth, but this led to a lower accuracy.
+We then learn the dataset by finding P(w|v) and P(v). P(w|v) is represented by a nested dictionary where [v][word] = probability and P(v) is represented by a dictionary where P[v] = probability.
+For each v, we record words and their frequencies in a dictionary. We then assign every member of P(w|v) using the count of the respective word, the length of the vocabulary set and counting the number of word positions in each document. We didn’t need to combine all of the documents, we can just simply iterate through them and record a counter for word positions instead.
+The classification of a single document is done by finding all of the words from the document that exist in the current dictionary. We then get the product of all of the P(w|v) and P(v) for each respective v and store them in a dictionary where the probability product is stored as a key and the v as the value. We then use the function max() on the keys of said result dictionary and use that function value to give us what the classifier classified the given document.
+
+# Results
+There are 11314 documents in the training set. There are 7532 documents in the testing set. 5874 documents were classified correctly using the Naive Bayes text classifier. The accuracy rate is 77.98725438130643%. The document composition for each v and the accuracy rate of the document classification is recorded in Table 1/Appendix Section.
+
+# Discussion
+The most interesting deduction is that the more specific the newsgroup topic is, the more accurate that the Naïve Bayes classifier can determine what newsgroup a document belongs to and the converse is also true where the less specific the newsgroup is, the accuracy rate plummets. We can see this in Table 1 where every newsgroup that isn’t a misc will always have an accuracy rate of at least 64.87%. The bottom 3 newsgroups for terms of accuracy rate are all misc which includes a 0.25% accuracy rate for comp.os.ms-windows.misc. A reason for this is that the posts that are written in misc newsgroups are rarely related to the actual root of the newsgroup. The misc section caters to other topics of discussion other than the “root newsgroup” meaning that it is much easier for the classifier to confuse a document from a misc newsgroup with another newsgroup and much harder for the classifier to even consider the root newsgroup since topics regarding the root newsgroup at posted there instead. For example, an post about guns and the policies surrounding it posted in talk.religion.misc can be easily classified as being talk.politics.guns because it would have to use similar words found in the posts found in talk.politics.guns. Likewise, posts about politics in talk.politics.misc are less likely because you are more likely to post in talk.politics.mideast or talk.politics.* (where wildcard is the relevant section for the type of politics to be discussed).
+
+# Conclusions
+My own recommendation from these results is to use Naïve Bayes text classification where each class or v in this case has its own specific domain (such as science, sports etc.) and not include vs’ where its domain can encompass many specific domains found in the dataset. A few crossovers should not do much harm as evident in the accuracy rates for the rec.* newsgroups and sci.* newsgroups.
+
