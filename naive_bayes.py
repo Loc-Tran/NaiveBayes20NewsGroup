@@ -1,4 +1,4 @@
-# By Phuoc Loc Tran (z3331774)
+# By Phuoc Loc Tran
 # Assuming filenames and path names remain the same from the dataset 20news-bydate.tar.gz
 # and these files are in the same directory as this python code
 # http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz
